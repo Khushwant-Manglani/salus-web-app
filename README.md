@@ -1,6 +1,6 @@
-# salus-backend
+# salus-web-app
 
-The salus app backend for an application managing the sale of DNA kits products, including user, partner and admin role, as well as earning, chat, news, blogs, recipe, podcast and for admin dashboard functionality.
+The salus app is an application managing the sale of DNA kits products, including user, partner and admin role, as well as earning, chat, news, blogs, recipe, podcast and for admin dashboard functionality.
 
 ## Key Features:
 
@@ -42,6 +42,10 @@ Project made by using the standard practice like JWT, bcrypt, access tokens, ref
 ## Schema
 
 [Model Link](https://www.dbdiagram.io/d/Nutrigenomics-66697a22a179551be6b0757f)
+
+## Ui/Ux Design
+
+[Figma Link](https://www.figma.com/design/TSsrwttMWjtvD2R7rgatmt/Nutrigenomics?node-id=782-4548&t=CpQqqZczZWHwF3Ee-0)
 
 ## Tech Stack
 
