@@ -1,0 +1,13 @@
+# Ignore VS Code specific files
+.vscode
+
+# Dependency directories 
+/node_modules
+
+# Ignore build output directory
+./dist
+
+# dotenv environment variables files
+*.env
+.env
+.env.*
