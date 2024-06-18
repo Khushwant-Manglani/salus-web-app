@@ -1,6 +1,8 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+import jwt from 'jsonwebtoken';
 import { ROLES } from '../constants';
 
+// define the user schema
 const userSchema = Schema(
   {
     name: {
@@ -23,11 +25,6 @@ const userSchema = Schema(
       index: true,
     },
     address: {
-      type: String,
-      unique: true,
-      trim: true,
-    },
-    pincode: {
       type: String,
       trim: true,
     },
@@ -54,8 +51,57 @@ const userSchema = Schema(
       type: Boolean,
       default: false,
     },
+    // social login Id's
+    googleId: {
+      type: String,
+    },
+    facebookId: {
+      type: String,
+    },
+    appleId: {
+      type: String,
+    },
   },
   { timestamps: true },
 );
 
-export const User = model('User', userSchema);
+// assign function to our methods object in our userSchema
+userSchema.methods = {
+  /**
+   * Generate the access token for user.
+   * @returns {string} JWT access token.
+   */
+  generateAccessToken() {
+    return jwt.sign(
+      {
+        _id: this._id,
+        email: this.email,
+        mobileNumber: this.mobileNumber,
+        name: this.name,
+      },
+      process.env.JWT_ACCESS_TOKEN_SECRET_KEY,
+      {
+        expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRY,
+      },
+    );
+  },
+
+  /**
+   * Generate the refresh token for user.
+   * @returns {string} JWT refresh token.
+   */
+  generateRefreshToken() {
+    return jwt.sign(
+      {
+        _id: this._id,
+      },
+      process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
+      {
+        expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRY,
+      },
+    );
+  },
+};
+
+// create user model based on userSchema and export it
+export const User = mongoose.model('User', userSchema);
