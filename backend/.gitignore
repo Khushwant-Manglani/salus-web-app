@@ -144,4 +144,8 @@ dist
 # log folder
 logs
 
+# personal testing 
+
+test.js
+
 # End of https://www.toptal.com/developers/gitignore/api/node

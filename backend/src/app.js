@@ -33,7 +33,13 @@ app.use(cookieParser());
 // use express static middleware for serving the static files from the public folder
 app.use(express.static('public'));
 
-// routes imports and declarations
+// routes imports
+import userRouter from './routes/user.routes.js';
+import partnerRoutes from './routes/partner.routes.js';
+
+// routes declarations
+app.use('/api/v1/user', userRouter);
+app.use('/api/v1/partner', partnerRoutes);
 
 // global error handler middleware
 app.use(errorHandler);

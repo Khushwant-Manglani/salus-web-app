@@ -10,3 +10,10 @@ export const ROLES = {
   Partner: 'PARTNER',
   User: 'USER',
 };
+
+// partner status
+export const PARTNER = {
+  Request: 'REQUEST',
+  Failed: 'FAILED',
+  Approved: 'APPROVED',
+};

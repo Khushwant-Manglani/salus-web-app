@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { ROLES } from '../constants';
 
 // define the user schema
-const userSchema = Schema(
+const userSchema = new Schema(
   {
     name: {
       type: String,
