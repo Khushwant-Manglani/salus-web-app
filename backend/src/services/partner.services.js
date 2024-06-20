@@ -1,4 +1,5 @@
 import { ApiError, uploadOnCloudinary } from '../utils/index.js';
+import { Partner, Document } from '../models/index.js';
 
 class PartnerService {
   /**
@@ -13,7 +14,21 @@ class PartnerService {
     });
 
     if (businessDetailExist) {
-      throw new ApiError(409, 'businessName or documentNumber of partner already exist', err);
+      throw new ApiError(409, 'businessName or documentNumber of partner already exist');
+    }
+  }
+
+  /**
+   * Validates if the provided document type ID exists in the Document collection.
+   * This ensures the document type is valid before associating it with a partner.
+   * @param {string} documentTypeId - The document type ID to validate.
+   * @throws {ApiError} Throws error if document type ID is invalid.
+   */
+  async checkDocumentTypeIdValid(documentTypeId) {
+    const document = await Document.findById(documentTypeId);
+
+    if (!document) {
+      throw new ApiError(400, 'Invalid document type model id');
     }
   }
 
@@ -77,6 +92,9 @@ class PartnerService {
         partnerDetails.documentNumber,
       );
 
+      // Validate the document type ID
+      await this.checkDocumentTypeIdValid(partnerDetails.documentTypeId);
+
       // upload the document front and back image on cloud
       const { documentFrontUrl, documentBackUrl } = await this.uploadFile(files);
 
@@ -88,7 +106,7 @@ class PartnerService {
       });
       newPartner.save();
 
-      // return the new created partner
+      // return the newly created partner
       return newPartner;
     } catch (err) {
       throw new ApiError(500, 'Error occurred while create the partner', err);
