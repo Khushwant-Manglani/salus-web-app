@@ -28,7 +28,7 @@ class PartnerService {
     const document = await Document.findById(documentTypeId);
 
     if (!document) {
-      throw new ApiError(400, 'Invalid document type model id');
+      throw new ApiError(400, 'Invalid document model id');
     }
   }
 
@@ -104,12 +104,17 @@ class PartnerService {
         documentBackImage: documentBackUrl,
         ...partnerDetails,
       });
-      newPartner.save();
+      await newPartner.save();
+
+      // if partner creation failed
+      if (!newPartner) {
+        throw new ApiError(500, 'Failed to create partner');
+      }
 
       // return the newly created partner
       return newPartner;
     } catch (err) {
-      throw new ApiError(500, 'Error occurred while create the partner', err);
+      throw new ApiError(500, 'Error occurred while create the partner', err.message);
     }
   }
 }

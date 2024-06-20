@@ -12,7 +12,6 @@ class PartnerValidation {
    * Schema for validating partner data during creation.
    */
   partnerSchema = z.object({
-    userId: ObjectIdSchema,
     businessName: z.string().min(1).max(255).trim(),
     address1: z.string().min(1).max(255).trim(),
     address2: z.string().min(1).max(255).trim().optional(),
@@ -20,7 +19,7 @@ class PartnerValidation {
     documentNumber: z.string().min(1).max(255).trim(),
     documentFrontUrl: z.string().url().optional(),
     documentBackUrl: z.string().url().optional(),
-    status: z.enum([PARTNER.Request, PARTNER.Failed, PARTNER.Approved]),
+    status: z.enum([PARTNER.Request, PARTNER.Failed, PARTNER.Approved]).optional(),
   });
 
   /**
@@ -28,14 +27,13 @@ class PartnerValidation {
    * Allow fields to be optional for partial updates.
    */
   partnerUpdateSchema = z.object({
-    userId: ObjectIdSchema.optional(),
     businessName: z.string().min(1).max(255).trim().optional(),
     address1: z.string().min(1).max(255).trim().optional(),
     address2: z.string().min(1).max(255).trim().optional().optional(),
     documentTypeId: ObjectIdSchema,
     documentNumber: z.string().min(1).max(255).trim().optional(),
-    documentFrontUrl: z.string().url().optional(),
-    documentBackUrl: z.string().url().optional(),
+    documentFrontImage: z.string().url().optional(),
+    documentBackImage: z.string().url().optional(),
     status: z.enum([PARTNER.Request, PARTNER.Failed, PARTNER.Approved]).optional(),
   });
 
@@ -48,7 +46,7 @@ class PartnerValidation {
     try {
       return this.partnerSchema.parse(partnerData);
     } catch (err) {
-      throw new ApiError(400, 'Validation Error', err);
+      throw new ApiError(400, err['issues'][0]?.message || 'Validation Error');
     }
   }
 
@@ -62,7 +60,7 @@ class PartnerValidation {
     try {
       return this.partnerUpdateSchema.parse(partnerData);
     } catch (err) {
-      throw new ApiError(400, 'Validation Error', err);
+      throw new ApiError(400, err['issues'][0]?.message || 'Validation Error');
     }
   }
 }

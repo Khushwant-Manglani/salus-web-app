@@ -23,7 +23,7 @@ const errorHandler = (err, req, res, next) => {
 
   const errorObject = {
     method: req.method,
-    orignalUrl: req.orignalUrl,
+    orignalUrl: req.url,
     statusCode,
     message,
     errors: errors,

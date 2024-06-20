@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { partnerController } from '../controllers/partner.controller';
+import { partnerController } from '../controllers/index.js';
 import { upload } from '../middlewares/multer.middleware.js';
 
 const router = Router();
@@ -9,8 +9,7 @@ const router = Router();
  * Route to register a new partner with document images upload.
  * Uses multer middleware for file uploads.
  */
-router.route(
-  '/register',
+router.route('/register').post(
   upload.fields([
     { name: 'documentFrontImage', maxCount: 1 },
     { name: 'documentBackImage', maxCount: 1 },

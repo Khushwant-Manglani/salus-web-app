@@ -37,7 +37,20 @@ class UserService {
       // return the new created user
       return newUser;
     } catch (err) {
-      throw new ApiError(500, 'Error occurred while create the user', err);
+      throw new ApiError(500, err.message || 'Error occurred while create the user');
+    }
+  }
+
+  /**
+   * Deletes a user by their ID.
+   * @param {string} userId - The ID of the user to delete.
+   * @throws {ApiError} Throws an error if user deletion fails.
+   */
+  async deleteUser(userId) {
+    try {
+      await User.deleteOne({ _id: userId });
+    } catch (error) {
+      throw new ApiError(500, 'Error occurred while delete the user', err.message);
     }
   }
 }

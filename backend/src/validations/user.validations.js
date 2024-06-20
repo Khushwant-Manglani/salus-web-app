@@ -9,7 +9,7 @@ class UserValidation {
     name: z.string().min(5, { message: 'Name is required' }),
     email: z.string().email({ message: 'Invalid email address' }),
     mobileNumber: z.string().min(10, { message: 'Mobile number should contain atleast 10 digits' }),
-    address: z.string().optional(),
+    address: z.string().min(1).max(255).trim().optional(),
     pincode: z.string().optional(),
     avatar: z.string().url({ message: 'Invalid Url' }).optional(),
     role: z.enum(['ADMIN', 'PARTNER', 'USER']).optional(),
@@ -51,7 +51,7 @@ class UserValidation {
     try {
       return this.userSchema.parse(userData);
     } catch (err) {
-      throw new ApiError(400, 'Validation Error', err);
+      throw new ApiError(400, err['issues'][0]?.message || 'Validation Error');
     }
   }
 
@@ -65,7 +65,7 @@ class UserValidation {
     try {
       return this.updateUserSchema.parse(userData);
     } catch (err) {
-      throw new ApiError(400, 'Validation Error', err);
+      throw new ApiError(400, err['issues'][0]?.message || 'Validation Error');
     }
   }
 }

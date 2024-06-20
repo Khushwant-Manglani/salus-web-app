@@ -9,7 +9,7 @@ dotenv.config();
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  secret_key: process.env.CLOUDINARY_API_SECRET_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 /**
@@ -31,12 +31,12 @@ const uploadOnCloudinary = async (localFilePath) => {
     });
 
     // remove the locally saved temporary file after successfully upload.
-    fs.unlink(localFilePath);
+    fs.unlinkSync(localFilePath);
 
     return uploadResult;
   } catch (err) {
     // if the upload file on cloudinary operation gets fail then remove the locally saved temporary file
-    fs.unlink(localFilePath);
+    fs.unlinkSync(localFilePath);
     throw new ApiError(500, 'Error occurr while upload the file on cloudinary', err);
   }
 };

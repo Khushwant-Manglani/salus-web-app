@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import jwt from 'jsonwebtoken';
-import { ROLES } from '../constants';
+import { ROLES } from '../constants.js';
 
 // define the user schema
 const userSchema = new Schema(

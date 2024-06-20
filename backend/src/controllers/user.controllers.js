@@ -23,7 +23,7 @@ class UserController {
         .json(new ApiResponse(201, createdUserData, 'User registered successfully'));
     } catch (err) {
       // handle the error
-      throw new ApiError(500, 'Error occurr while register the user', err);
+      throw new ApiError(500, 'Error occurr while register the user', err.message);
     }
   });
 }

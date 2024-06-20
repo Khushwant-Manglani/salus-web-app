@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { PARTNER } from '../constants';
+import { PARTNER } from '../constants.js';
 
 // define the partner schema
 const partnerSchema = new Schema(
@@ -8,7 +8,6 @@ const partnerSchema = new Schema(
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
       index: true,
     },
     // Business name of partner

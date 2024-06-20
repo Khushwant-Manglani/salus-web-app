@@ -10,6 +10,8 @@ class PartnerController {
    * @returns {Promise<void>} - Promise that resolves with the created partner and user data or throws an error.
    */
   registerPartner = asyncHandler(async (req, res) => {
+    let user;
+
     try {
       // Destructure and separate user and partner details from req.body
       const { name, email, mobileNumber, pincode, ...partnerDetails } = req.body;
@@ -22,7 +24,7 @@ class PartnerController {
       userValidation.validateUser(userDetails);
 
       // create the user (PARTNER role)
-      const user = await userService.createUser(userDetails, 'PARTNER');
+      user = await userService.createUser(userDetails, 'PARTNER');
 
       // Create the partner using partner service
       const partner = await partnerService.createPartner(partnerDetails, req.files);
@@ -38,8 +40,13 @@ class PartnerController {
           ),
         );
     } catch (err) {
+      // Check if user created but partner not and error occurrs then delete user
+      if (user) {
+        await userService.deleteUser(user._id);
+      }
+
       // Throw an API error if any error occurs during registration
-      throw new ApiError(500, 'Error occurred while register the partner', err);
+      throw new ApiError(500, 'Error occurred while register the partner', err.message);
     }
   });
 }
