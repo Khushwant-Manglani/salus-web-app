@@ -1,5 +1,8 @@
 import { ApiError } from '../utils/ApiError.js';
 import { logger } from '../config/logger.js';
+import keys from '../config/keys.js';
+
+const { NodeEnvironment } = keys;
 
 /**
  * Express error-handling middleware.
@@ -27,7 +30,7 @@ const errorHandler = (err, req, res, next) => {
     statusCode,
     message,
     errors: errors,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    ...(NodeEnvironment === 'development' && { stack: err.stack }),
   };
 
   // %o: This is a placeholder that tells the logger to output the provided object in a pretty-printed format.

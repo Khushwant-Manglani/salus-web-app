@@ -1,6 +1,6 @@
 import { asyncHandler, ApiError, ApiResponse } from '../utils/index.js';
 import { userValidation } from '../validations/index.js';
-import { userService } from '../services/index.js';
+import { userRepository } from '../repository/index.js';
 
 class UserController {
   /**
@@ -15,7 +15,7 @@ class UserController {
       const validatedUserData = userValidation.validateUser(req.body);
 
       // the data is validate safely, pass it to the userService and create the user
-      const createdUserData = await userService.createUser(validatedUserData, 'USER');
+      const createdUserData = await userRepository.createUser(validatedUserData, 'USER');
 
       // send responce with success message and create user data
       return res

@@ -1,15 +1,15 @@
-import dotenv from 'dotenv';
 import { v2 as cloudinary } from 'cloudinary';
 import { ApiError } from './index.js';
 import fs from 'fs';
+import keys from '../config/keys.js';
 
-dotenv.config();
+const { Cloudinary } = keys;
 
 // Configure Cloudinary with environment variables
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: Cloudinary.cloudName,
+  api_key: Cloudinary.apiKey,
+  api_secret: Cloudinary.apiSecret,
 });
 
 /**

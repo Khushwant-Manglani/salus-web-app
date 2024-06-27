@@ -1,6 +1,6 @@
 import { asyncHandler, ApiError, ApiResponse } from '../utils/index.js';
 import { userValidation, partnerValidation } from '../validations/index.js';
-import { userService, partnerService } from '../services/index.js';
+import { userRepository, partnerRepository } from '../repository/index.js';
 
 class PartnerController {
   /**
@@ -24,10 +24,10 @@ class PartnerController {
       userValidation.validateUser(userDetails);
 
       // create the user (PARTNER role)
-      user = await userService.createUser(userDetails, 'PARTNER');
+      user = await userRepository.createUser(userDetails, 'PARTNER');
 
-      // Create the partner using partner service
-      const partner = await partnerService.createPartner(partnerDetails, req.files);
+      // Create the partner using partner repository
+      const partner = await partnerRepository.createPartner(partnerDetails, req.files);
 
       // Return successful response with merged user and partner data
       return res
@@ -42,7 +42,7 @@ class PartnerController {
     } catch (err) {
       // Check if user created but partner not and error occurrs then delete user
       if (user) {
-        await userService.deleteUser(user._id);
+        await userRepository.deleteUser(user._id);
       }
 
       // Throw an API error if any error occurs during registration

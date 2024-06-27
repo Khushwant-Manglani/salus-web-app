@@ -1,16 +1,20 @@
 import dotenv from 'dotenv';
-import { connectDB } from './db/index.js';
-import { logger } from './config/logger.js';
-import { app } from './app.js';
 
 // Load environment variables from .env file
 dotenv.config({
   path: './.env',
 });
 
+import { connectDB } from './db/index.js';
+import { logger } from './config/logger.js';
+import { app } from './app.js';
+import keys from './config/keys.js';
+
+const { Port } = keys;
+
 // function to start the server
 const startServer = () => {
-  const port = process.env.PORT || 8000;
+  const port = Port || 8000;
   app.listen(port, () => {
     logger.info(`⚙️  Server is running on port: ${port}`);
   });

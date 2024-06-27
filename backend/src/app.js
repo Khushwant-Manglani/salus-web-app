@@ -3,6 +3,9 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { errorHandler } from './middlewares/error.middleware.js';
 import { REQ_BODY_SIZE_LIMIT } from './constants.js';
+import keys from './config/keys.js';
+
+const { CorsOrigin } = keys;
 
 // Initialize the Express app
 const app = express();
@@ -19,7 +22,7 @@ const app = express();
 // Use CORS middleware to allow requests from specific origins and include credentials(ensures cookies and authentication headers are included in cors)
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: CorsOrigin,
     credentials: true,
   }),
 );
@@ -36,10 +39,14 @@ app.use(express.static('public'));
 // routes imports
 import userRouter from './routes/user.routes.js';
 import partnerRoutes from './routes/partner.routes.js';
+import authRoutes from './routes/auth.routes.js';
 
 // routes declarations
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/partner', partnerRoutes);
+app.use('/api/v1/user', authRoutes);
+app.use('/api/v1/partner', authRoutes);
+app.use('/api/v1/admin', authRoutes);
 
 // global error handler middleware
 app.use(errorHandler);

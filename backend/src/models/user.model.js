@@ -1,6 +1,9 @@
 import mongoose, { Schema } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import { ROLES } from '../constants.js';
+import keys from '../config/keys.js';
+
+const { Jwt } = keys;
 
 // define the user schema
 const userSchema = new Schema(
@@ -79,9 +82,9 @@ userSchema.methods = {
         mobileNumber: this.mobileNumber,
         name: this.name,
       },
-      process.env.JWT_ACCESS_TOKEN_SECRET_KEY,
+      Jwt.accessTokenSecret,
       {
-        expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRY,
+        expiresIn: Jwt.accessTokenExpiry,
       },
     );
   },
@@ -95,9 +98,9 @@ userSchema.methods = {
       {
         _id: this._id,
       },
-      process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
+      refreshTokenSecret,
       {
-        expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRY,
+        expiresIn: refreshTokenExpiry,
       },
     );
   },

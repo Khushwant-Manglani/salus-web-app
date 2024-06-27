@@ -1,6 +1,20 @@
 import { z } from 'zod';
 import { ApiError } from '../utils/index.js';
 
+// Define a regular expression for phone numbers with country codes
+const mobileNumberRegex = /^\+[1-9]\d{1,14}$/;
+
+// Create a Zod schema for the phone number with country code
+const mobileNumberSchema = z.string().refine(
+  (value) => {
+    return mobileNumberRegex.test(value);
+  },
+  {
+    message:
+      "Invalid mobile number format. It should start with a '+' followed by the country code and mobile number.",
+  },
+);
+
 class UserValidation {
   /**
    * Schema for validating user data during creation.
@@ -8,7 +22,7 @@ class UserValidation {
   userSchema = z.object({
     name: z.string().min(5, { message: 'Name is required' }),
     email: z.string().email({ message: 'Invalid email address' }),
-    mobileNumber: z.string().min(10, { message: 'Mobile number should contain atleast 10 digits' }),
+    mobileNumber: mobileNumberSchema,
     address: z.string().min(1).max(255).trim().optional(),
     pincode: z.string().optional(),
     avatar: z.string().url({ message: 'Invalid Url' }).optional(),
@@ -27,10 +41,7 @@ class UserValidation {
   updateUserSchema = z.object({
     name: z.string().min(5, { message: 'Name is required' }).optional(),
     email: z.string().email({ message: 'Invalid email address' }).optional(),
-    mobileNumber: z
-      .string()
-      .min(10, { message: 'Mobile number should contain atleast 10 digits' })
-      .optional(),
+    mobileNumber: mobileNumberSchema.optional(),
     address: z.string().optional(),
     pincode: z.string().optional(),
     avatar: z.string().url({ message: 'Invalid Url' }).optional(),
