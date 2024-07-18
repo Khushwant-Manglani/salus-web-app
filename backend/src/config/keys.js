@@ -47,6 +47,28 @@ const keys = {
     apiKey: process.env.CLOUDINARY_API_KEY,
     apiSecret: process.env.CLOUDINARY_API_SECRET,
   },
+
+  // session configuration for cookie session management
+  Session: {
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  },
+
+  // Google oauth configuration for authentication
+  Google: {
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackUrl: process.env.GOOGLE_CALLBACK_URL,
+  },
+
+  // Facebook oauth configuration for authentication
+  Facebook: {
+    clientId: process.env.FACEBOOK_CLIENT_ID,
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    callbackUrl: process.env.FACEBOOK_CALLBACK_URL,
+  },
 };
 
 export default keys;

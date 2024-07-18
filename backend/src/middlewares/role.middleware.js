@@ -11,8 +11,13 @@ import { ApiError } from '../utils/index.js';
  */
 const extractRole = (req, _, next) => {
   try {
+    // Ensure the base URL is not empty
+    if (!req.baseUrl) {
+      throw new ApiError(400, 'Base url is empty');
+    }
+
     // Extract the role from the base URL
-    const role = req.baseUrl.split('/').pop().toUpperCase();
+    const role = req.baseUrl.split('/')[3]?.toUpperCase();
 
     // Check if the role is present
     if (!role) {
@@ -30,4 +35,20 @@ const extractRole = (req, _, next) => {
   }
 };
 
-export { extractRole };
+/**
+ * Middleware to check if the user role is 'USER'.
+ *
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object (not used)
+ * @param {Function} next - Express next middleware function
+ * @throws {ApiError} - If the role is not 'USER'
+ */
+const isUserRole = (req, _, next) => {
+  if (req.role === 'user') {
+    next();
+  } else {
+    next(new ApiError(403, 'User role not found'));
+  }
+};
+
+export { extractRole, isUserRole };

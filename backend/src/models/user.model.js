@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import jwt from 'jsonwebtoken';
-import { ROLES } from '../constants.js';
-import keys from '../config/keys.js';
+import { ROLES, MAIL_PROVIDER } from '../constants.js';
+import keys from '../config/k-eys.js';
 
 const { Jwt } = keys;
 
@@ -22,7 +22,7 @@ const userSchema = new Schema(
     },
     mobileNumber: {
       type: String,
-      required: true,
+      required: () => provider === 'Email',
       unique: true,
       trim: true,
       index: true,
@@ -64,6 +64,11 @@ const userSchema = new Schema(
     appleId: {
       type: String,
     },
+    provider: {
+      type: String,
+      required: true,
+      default: MAIL_PROVIDER.Email,
+    },
   },
   { timestamps: true },
 );
@@ -98,9 +103,9 @@ userSchema.methods = {
       {
         _id: this._id,
       },
-      refreshTokenSecret,
+      Jwt.refreshTokenSecret,
       {
-        expiresIn: refreshTokenExpiry,
+        expiresIn: Jwt.refreshTokenExpiry,
       },
     );
   },

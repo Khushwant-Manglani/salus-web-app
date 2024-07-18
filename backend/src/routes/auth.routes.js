@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { authController } from '../controllers/index.js';
-import { extractRole } from '../middlewares/index.js';
+import { extractRole, isUserRole } from '../middlewares/index.js';
+import passport from 'passport';
+import '../config/passport.js';
 
 const router = Router();
 
@@ -21,5 +23,47 @@ router.route('/verify').post(extractRole, authController.verifyRole);
  * No need for extractRole middleware here as it doesn't depend on the role.
  */
 router.route('/resend').post(authController.resendOtp);
+
+/**
+ * Route for initiating Google OAuth login.
+ * Uses extractRole to ensure the user role is present and isUserRole to check if the role is 'USER'.
+ */
+router
+  .route('/google')
+  .get(extractRole, isUserRole, passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+/**
+ * Route for handling the Google OAuth callback.
+ * Uses extractRole to ensure the user role is present and isUserRole to check if the role is 'USER'.
+ */
+router
+  .route('/google/callback')
+  .get(
+    extractRole,
+    isUserRole,
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    authController.socialAuth,
+  );
+
+/**
+ * Route for initiating Facebook OAuth login.
+ * Uses extractRole to ensure the user role is present and isUserRole to check if the role is 'USER'.
+ */
+router
+  .route('/facebook')
+  .get(extractRole, isUserRole, passport.authenticate('facebook', { scope: ['profile', 'email'] }));
+
+/**
+ * Route for handling the Facebook OAuth callback.
+ * Uses extractRole to ensure the user role is present and isUserRole to check if the role is 'USER'.
+ */
+router
+  .route('/facebook/callback')
+  .get(
+    extractRole,
+    isUserRole,
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    authController.socialAuth,
+  );
 
 export default router;

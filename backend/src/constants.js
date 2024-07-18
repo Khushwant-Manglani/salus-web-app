@@ -17,3 +17,11 @@ export const PARTNER = {
   Failed: 'FAILED',
   Approved: 'APPROVED',
 };
+
+// mail provider
+export const MAIL_PROVIDER = {
+  Email: 'Email',
+  Google: 'Google',
+  Facebook: 'Facebook',
+  Apple: 'Apple',
+};

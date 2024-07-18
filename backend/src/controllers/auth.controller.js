@@ -110,6 +110,11 @@ class AuthController {
       throw new ApiError(500, 'Error occurred while resending OTP', err.message);
     }
   });
+
+  socialAuth = (_, res) => {
+    // Redirect to profile after successful authentication
+    res.redirect('/profile');
+  };
 }
 
 // Exporting an instance of AuthController
