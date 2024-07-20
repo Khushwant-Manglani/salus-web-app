@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
-import keys from '../config/keys';
-import { ApiError } from '../utils';
-import { userRepository } from '../repository';
+import keys from '../config/keys.js';
+import { ApiError } from '../utils/index.js';
+import { userRepository } from '../repository/index.js';
 
 const { accessTokenSecret } = keys.Jwt;
 

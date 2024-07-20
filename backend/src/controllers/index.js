@@ -1,5 +1,5 @@
 // Importing controllers
-import { userController } from './user.controller.js';
+import { userController } from './user.controllers.js';
 import { partnerController } from './partner.controller.js';
 import { authController } from './auth.controller.js';
 

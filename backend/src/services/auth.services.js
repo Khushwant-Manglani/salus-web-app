@@ -119,6 +119,14 @@ class AuthService {
       throw new ApiError(500, 'Failed to resend OTP', err.message);
     }
   }
+
+  async clearUserRefreshToken(id) {
+    try {
+      await userRepository.clearUserRefreshTokenById(id);
+    } catch (error) {
+      throw new ApiError(500, 'Failed to clear user refresh token', err.message);
+    }
+  }
 }
 
 // Export a singleton instance of AuthService

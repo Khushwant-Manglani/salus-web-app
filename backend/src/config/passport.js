@@ -1,10 +1,10 @@
 import passport from 'passport';
 import GooglePassport from 'passport-google-oauth20';
 import FacebookPassport from 'passport-facebook';
-import keys from './keys';
+import keys from './keys.js';
 
-import { userRepository } from '../repository';
-import { logger } from './logger';
+import { userRepository } from '../repository/index.js';
+import { logger } from './logger.js';
 
 /**
  * Configure Passport.js with Google and Facebook authentication strategies.
@@ -18,40 +18,42 @@ const { Google, Facebook } = keys;
 
 // Configure Google authentication strategy
 passport.use(
-  new GoogleStrategy({
-    clientID: Google.clientId,
-    clientSecret: Google.clientSecret,
-    callbackURL: Google.callbackUrl,
-  }),
-
-  async (accessToken, refreshToken, profile, done) => {
-    try {
-      // Find or create user in the database based on Google profile
-      const user = await userRepository.findOrCreateFromProvider(profile);
-      return done(null, user);
-    } catch (err) {
-      return done(err, null);
-    }
-  },
+  new GoogleStrategy(
+    {
+      clientID: Google.clientId,
+      clientSecret: Google.clientSecret,
+      callbackURL: Google.callbackUrl,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // Find or create user in the database based on Google profile
+        const user = await userRepository.findOrCreateFromProvider(profile);
+        return done(null, user);
+      } catch (err) {
+        return done(err, null);
+      }
+    },
+  ),
 );
 
 // Configure Facebook authentication strategy
 passport.use(
-  new FacebookStrategy({
-    clientID: Facebook.clientId,
-    clientSecret: Facebook.clientSecret,
-    callbackURL: Facebook.callbackUrl,
-  }),
-
-  async (accessToken, refreshToken, profile, done) => {
-    try {
-      // Find or create user in the database based on Facebook profile
-      const user = await userRepository.findOrCreateFromProvider(profile);
-      return done(null, user);
-    } catch (err) {
-      return done(err, null);
-    }
-  },
+  new FacebookStrategy(
+    {
+      clientID: Facebook.clientId,
+      clientSecret: Facebook.clientSecret,
+      callbackURL: Facebook.callbackUrl,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // Find or create user in the database based on Facebook profile
+        const user = await userRepository.findOrCreateFromProvider(profile);
+        return done(null, user);
+      } catch (err) {
+        return done(err, null);
+      }
+    },
+  ),
 );
 
 // Serialize user by ID to store in the session cookie

@@ -145,6 +145,14 @@ class UserRepository {
     }
   }
 
+  async clearUserRefreshTokenById(id) {
+    try {
+      await User.findByIdAndUpdate(id, { $set: { refreshToken: undefined } }, { new: true });
+    } catch (err) {
+      throw new ApiError(500, 'Not able to update refresh token or User not found', err.message);
+    }
+  }
+
   /**
    * Deletes a user by their ID.
    * @param {string} userId - The ID of the user to delete.

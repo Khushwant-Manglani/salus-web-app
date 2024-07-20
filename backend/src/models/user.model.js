@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import { ROLES, MAIL_PROVIDER } from '../constants.js';
-import keys from '../config/k-eys.js';
+import keys from '../config/keys.js';
 
 const { Jwt } = keys;
 

@@ -66,4 +66,6 @@ router
     authController.socialAuth,
   );
 
+router.route('/logout').get(extractRole, authController.logoutRole);
+
 export default router;

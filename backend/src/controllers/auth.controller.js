@@ -63,7 +63,7 @@ class AuthController {
       const cookieOptions = {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
+        sameSite: 'strict', // add sameSite attribute for better security
       };
 
       // Send success response with tokens in cookies
@@ -115,6 +115,27 @@ class AuthController {
     // Redirect to profile after successful authentication
     res.redirect('/profile');
   };
+
+  logoutRole = asyncHandler(async (req, res) => {
+    if (req.isAuthenticated()) {
+      req.logout();
+    } else {
+      await authService.clearUserRefreshToken(req.user._id);
+
+      // Set cookie options for tokens
+      const cookieOptions = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict', // add sameSite attribute for better security
+      };
+
+      res
+        .status(200)
+        .clearCookie('accessToken', cookieOptions)
+        .clearCookie('refreshToken', cookieOptions)
+        .json(new ApiResponse(200, {}, 'User logged out successfully'));
+    }
+  });
 }
 
 // Exporting an instance of AuthController
