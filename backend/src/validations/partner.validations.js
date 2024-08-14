@@ -56,7 +56,7 @@ class PartnerValidation {
    * @param {object} userData - The partner data object to validate.
    * @returns {object} validated partner data or throws zod validation error.
    */
-  validatePartnerUpdate(partnerData) {
+  validateUpdatePartner(partnerData) {
     try {
       return this.partnerUpdateSchema.parse(partnerData);
     } catch (err) {

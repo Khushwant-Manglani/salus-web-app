@@ -57,13 +57,21 @@ app.use(passport.session());
 // routes imports
 import userRouter from './routes/user.routes.js';
 import partnerRoutes from './routes/partner.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 import authRoutes from './routes/auth.routes.js';
+import profileRoutes from './routes/profile.routes.js';
 
 // routes declarations
 app.use('/api/v1/user', userRouter);
-app.use('/api/v1/partner', partnerRoutes);
+app.use('/api/v1/user/profile', profileRoutes);
 app.use('/api/v1/user/auth', authRoutes);
+
+app.use('/api/v1/partner', partnerRoutes);
+app.use('/api/v1/partner/profile', profileRoutes);
 app.use('/api/v1/partner/auth', authRoutes);
+
+app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/admin/profile', profileRoutes);
 app.use('/api/v1/admin/auth', authRoutes);
 
 // global error handler middleware

@@ -3,6 +3,7 @@ import { partnerService } from './partner.services.js';
 import { authService } from './auth.services.js';
 import { notificationService } from './notification.services.js';
 import { otpSessionService } from './otpSession.services.js';
+import { avatarService } from './avatar.services.js';
 
 /**
  * Centralized exports for all services used in the application.
@@ -15,4 +16,5 @@ export {
   authService, // Handles authentication-related operations
   notificationService, // Handles notification-related operations
   otpSessionService, // Handles OTP session-related operations
+  avatarService, // Handles avatar-related operations
 };

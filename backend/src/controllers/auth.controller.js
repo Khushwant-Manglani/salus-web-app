@@ -111,29 +111,43 @@ class AuthController {
     }
   });
 
+  // Redirect to profile after successful authentication
   socialAuth = (_, res) => {
-    // Redirect to profile after successful authentication
     res.redirect('/profile');
   };
 
+  /**
+   * Logs out the user and clears their refresh token.
+   * @param {object} req - The request object.
+   * @param {object} res - The response object.
+   * @throws {ApiError} Throws an error if logout process fails.
+   */
   logoutRole = asyncHandler(async (req, res) => {
-    if (req.isAuthenticated()) {
-      req.logout();
-    } else {
-      await authService.clearUserRefreshToken(req.user._id);
+    try {
+      // Check if the user is authenticated
+      if (req.isAuthenticated()) {
+        req.logout();
+        res.status(200).json(new ApiResponse(200, {}, 'User logged out successfully'));
+      } else {
+        // Clear the user's refresh token
+        await authService.clearUserRefreshToken(req.user._id);
 
-      // Set cookie options for tokens
-      const cookieOptions = {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'strict', // add sameSite attribute for better security
-      };
+        // Set cookie options for tokens
+        const cookieOptions = {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'strict', // add sameSite attribute for better security
+        };
 
-      res
-        .status(200)
-        .clearCookie('accessToken', cookieOptions)
-        .clearCookie('refreshToken', cookieOptions)
-        .json(new ApiResponse(200, {}, 'User logged out successfully'));
+        // Clear access and refresh tokens from cookies
+        res
+          .status(200)
+          .clearCookie('accessToken', cookieOptions)
+          .clearCookie('refreshToken', cookieOptions)
+          .json(new ApiResponse(200, {}, 'User logged out successfully'));
+      }
+    } catch (err) {
+      throw new ApiError(500, 'Error occurred while logout', err.message);
     }
   });
 }

@@ -51,4 +51,36 @@ const isUserRole = (req, _, next) => {
   }
 };
 
-export { extractRole, isUserRole };
+/**
+ * Middleware to check if the user role is 'Partner'.
+ *
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object (not used)
+ * @param {Function} next - Express next middleware function
+ * @throws {ApiError} - If the role is not 'Partner'
+ */
+const isPartnerRole = (req, _, next) => {
+  if (req.role === 'partner') {
+    next();
+  } else {
+    next(new ApiError(403, 'Partner role not found'));
+  }
+};
+
+/**
+ * Middleware to check if the user role is 'Admin'.
+ *
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object (not used)
+ * @param {Function} next - Express next middleware function
+ * @throws {ApiError} - If the role is not 'Admin'
+ */
+const isAdminRole = (req, _, next) => {
+  if (req.role === 'admin') {
+    next();
+  } else {
+    next(new ApiError(403, 'Admin role not found'));
+  }
+};
+
+export { extractRole, isUserRole, isPartnerRole, isAdminRole };

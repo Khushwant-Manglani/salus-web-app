@@ -1,5 +1,5 @@
+import { userRepository } from '../repository/index.js';
 import { ApiError } from '../utils/index.js';
-import { userRepository } from '../repository/user.repository.js';
 
 /**
  * Service class for user-related operations.
@@ -49,6 +49,46 @@ class UserService {
       return { accessToken, refreshToken };
     } catch (err) {
       throw new ApiError(500, 'Failed to generate tokens', err.message);
+    }
+  }
+
+  /**
+   * Retrieves the user's profile by userId.
+   * @param {string} userId - The ID of the user.
+   * @returns {Promise<object>} The user's profile.
+   */
+  async getProfile(userId) {
+    try {
+      const userProfile = await userRepository.findUserById(userId);
+      if (!userProfile) {
+        throw new ApiError(404, 'User not found');
+      }
+      return userProfile;
+    } catch (err) {
+      throw new ApiError(500, 'Failed to retrieve user profile', err.message);
+    }
+  }
+
+  /**
+   * Partially updates the user's profile.
+   * @param {string} userId - The ID of the user.
+   * @param {object} profileData - Partial profile data to update.
+   * @returns {Promise<object>} The updated user profile.
+   * @throws {ApiError} If profile update fails.
+   */
+  async partialUpdateProfile(userId, profileData) {
+    try {
+      const existingProfile = await userRepository.findUserById(userId);
+      if (!existingProfile) {
+        throw new ApiError(404, 'User not found');
+      }
+
+      const updatedProfile = { ...existingProfile._doc, ...profileData };
+      await userRepository.updateUserById(userId, updatedProfile);
+
+      return updatedProfile;
+    } catch (err) {
+      throw new ApiError(500, 'Failed to update user profile', err.message);
     }
   }
 }

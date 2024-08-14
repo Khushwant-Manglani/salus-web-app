@@ -41,4 +41,22 @@ const uploadOnCloudinary = async (localFilePath) => {
   }
 };
 
-export { uploadOnCloudinary };
+/**
+ * Deletes a file from Cloudinary using the public ID.
+ * @param {string} publicId - Public ID of the file to delete from Cloudinary.
+ * @returns {Promise<void>} - Resolves if deletion is successful, otherwise throws an error.
+ * @throws {ApiError} - Throws API error if deletion fails.
+ */
+const deleteFromCloudinary = async (publicId) => {
+  if (!publicId) {
+    throw new ApiError(400, 'Public ID not provided for deletion from Cloudinary.');
+  }
+
+  try {
+    await cloudinary.uploader.destroy(publicId);
+  } catch (err) {
+    throw new ApiError(500, 'Error occurred while deleting the file from Cloudinary', err);
+  }
+};
+
+export { uploadOnCloudinary, deleteFromCloudinary };

@@ -93,16 +93,7 @@ class UserRepository {
       if (user) return user;
 
       // normalize profile data
-      let name, email, avatar;
-      if (provider === 'Google') {
-        name = profile.displayName;
-        email = profile.emails[0].value;
-        avatar = profile.photos[0].value;
-      } else if (provider === 'Facebook') {
-        name = profile.name;
-        email = profile.email;
-        avatar = profile.picture.data.url;
-      }
+      const { name, email, avatar } = this.normalizeProfileData(provider, profile);
 
       // if user not found then create the new user
       user = await User.Create({
@@ -121,6 +112,30 @@ class UserRepository {
         err.message,
       );
     }
+  }
+
+  /**
+   * Normalizes profile data based on the provider.
+   * @param {string} provider - The name of the provider (e.g., 'Google', 'Facebook').
+   * @param {object} profile - The profile data from the provider.
+   * @returns {object} Normalized user data.
+   */
+  normalizeProfileData(provider, profile) {
+    if (provider === 'Google') {
+      return {
+        name: profile.displayName,
+        email: profile.emails[0].value,
+        avatar: profile.photos[0].value,
+      };
+    } else if (provider === 'Facebook') {
+      return {
+        name: profile.name,
+        email: profile.email,
+        avatar: profile.picture.data.url,
+      };
+    }
+
+    throw new ApiError(400, 'Unsupported provider');
   }
 
   /**
@@ -145,6 +160,32 @@ class UserRepository {
     }
   }
 
+  /**
+   * Updates a user by their ID.
+   * @param {string} userId - The ID of the user to update.
+   * @param {object} updateData - The data to update the user with.
+   * @returns {Promise<object>} The updated user object.
+   * @throws {ApiError} If user update fails or user is not found.
+   */
+  async updateUserById(userId, updateData) {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
+
+      if (!updatedUser) {
+        throw new ApiError(404, 'User not found');
+      }
+
+      return updatedUser;
+    } catch (error) {
+      throw new ApiError(500, 'Failed to update user', error.message);
+    }
+  }
+
+  /**
+   * Clears the refresh token for a user by their ID.
+   * @param {string} id - The ID of the user to clear the refresh token for.
+   * @throws {ApiError} If there's an error during the operation.
+   */
   async clearUserRefreshTokenById(id) {
     try {
       await User.findByIdAndUpdate(id, { $set: { refreshToken: undefined } }, { new: true });
