@@ -4,6 +4,7 @@ import { authService } from './auth.services.js';
 import { notificationService } from './notification.services.js';
 import { otpSessionService } from './otpSession.services.js';
 import { avatarService } from './avatar.services.js';
+import { productService } from './product.services.js';
 
 /**
  * Centralized exports for all services used in the application.
@@ -17,4 +18,5 @@ export {
   notificationService, // Handles notification-related operations
   otpSessionService, // Handles OTP session-related operations
   avatarService, // Handles avatar-related operations
+  productService, // Handles product-related operations
 };
