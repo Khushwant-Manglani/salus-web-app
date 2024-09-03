@@ -5,6 +5,8 @@ import { authController } from './auth.controller.js';
 import { adminController } from './admin.controller.js';
 import { profileController } from './profile.controller.js';
 import { productController } from './product.controller.js';
+import { cartController } from './cart.controller.js';
+import { orderController } from './order.controller.js';
 
 // Exporting all controllers from a single entry point
 export {
@@ -14,4 +16,6 @@ export {
   adminController,
   profileController,
   productController,
+  cartController,
+  orderController,
 };
