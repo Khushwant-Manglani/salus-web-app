@@ -161,6 +161,28 @@ class UserRepository {
   }
 
   /**
+   * Find all users from the database.
+   * @async
+   * @returns {Promise<Array<object>>} A promise that resolves to an array of user objects.
+   * @throws {ApiError} If no users are found or there is an error during retrieval.
+   */
+  async findAllUsers() {
+    try {
+      // Find all users from the database
+      const users = await User.find({});
+
+      // Throw error if users not found
+      if (!users) {
+        throw new ApiError(404, 'No users found');
+      }
+
+      return users;
+    } catch (err) {
+      throw new ApiError(500, `Failed to find all users`, err.message);
+    }
+  }
+
+  /**
    * Updates a user by their ID.
    * @param {string} userId - The ID of the user to update.
    * @param {object} updateData - The data to update the user with.

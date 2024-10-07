@@ -7,6 +7,7 @@ import { avatarService } from './avatar.services.js';
 import { productService } from './product.services.js';
 import { cartService } from './cart.services.js';
 import { orderService } from './order.services.js';
+import { earningService } from './earning.services.js';
 
 /**
  * Centralized exports for all services used in the application.
@@ -23,4 +24,5 @@ export {
   productService, // Handles product-related operations
   cartService, // Handles cart-related operations
   orderService, // Handles order-related operations
+  earningService, // Handles earning-related operations
 };

@@ -4,6 +4,7 @@ import { authValidation } from './auth.validations.js';
 import { productValidation } from './product.validations.js';
 import { cartValidation } from './cart.validations.js';
 import { orderValidation } from './order.validations.js';
+import { earningValidation } from './earning.validations.js';
 
 /**
  * Module exporting validation instances for user, partner, and authentication operations.
@@ -16,4 +17,5 @@ export {
   productValidation,
   cartValidation,
   orderValidation,
+  earningValidation,
 };
